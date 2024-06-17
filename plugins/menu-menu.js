@@ -343,10 +343,6 @@ ${margen}
 ✓ _${usedPrefix}vervotos | cekvoto_
 ✓ _${usedPrefix}delvoto | deletevoto_
 
-> 🔞 *CONTENIDO* 🔞
-
-✓ _${usedPrefix}hornymenu_
-
 > 🔁 *CONVERTIDORES* 🔁
 
 ✓ _${usedPrefix}toimg | img | jpg *sticker*_
