@@ -1,88 +1,155 @@
-import fetch from 'node-fetch';
-import yts from 'yt-search';
-import ytdl from 'ytdl-core';
-import axios from 'axios';
-import {youtubedl, youtubedlv2} from '@bochilteam/scraper';
-const handler = async (m, {conn, command, args, text, usedPrefix}) => {
-if (!text) throw `${lenguajeGB['smsAvisoMG']()}${mid.smsMalused4}\n*${usedPrefix + command} Billie Eilish - Bellyache*`
-try { 
-const yt_play = await search(args.join(' '))
-const texto1 = `*𓆩 𓃠 𓆪 ✧═══ ${vs} ═══✧ 𓆩 𓃠 𓆪*
+// Creado por By @Alba070503
+import fg from 'api-dylux'
+import yts from 'yt-search'
+import fetch from 'node-fetch' 
 
-ও ${mid.smsYT1}
-» ${yt_play[0].title}
-﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
-ও ${mid.smsYT15}
-» ${yt_play[0].ago}
-﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
-ও ${mid.smsYT5}
-» ${secondString(yt_play[0].duration.seconds)}
-﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
-ও  ${mid.smsYT10}
-» ${MilesNumber(yt_play[0].views)}
-﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
-ও  ${mid.smsYT2}
-» ${yt_play[0].author.name}
-﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
-ও ${mid.smsYT4}
-» ${yt_play[0].url}
+let handler = async (m, { conn, args, usedPrefix, text, command }) => {
+    if (!text) return conn.reply(m.chat, `*🚩 Ingresa un título o enlace de un video o música de YouTube.*`, m)
 
-*𓆩 𓃠 𓆪 ✧═══ ${vs} ═══✧ 𓆩 𓃠 𓆪*`.trim()
+    try {
+        let vid;
 
-await conn.sendButton(m.chat, wm, texto1, yt_play[0].thumbnail, [['𝗠 𝗘 𝗡 𝗨 ☘️', `${usedPrefix}menu`]], null, null, m)
+        // Verificar si el texto ingresado es un enlace de YouTube
+        if (text.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
+            await m.react('🕓')
+            let res = await yts({ videoId: text.split('v=')[1] || text.split('/')[3] }) // Obtén el video directamente
+            vid = res
+        } else {
+            await m.react('🕓')
+            let res = await yts(text)
+            vid = res.videos[0] // Obtén el primer video de la búsqueda
+        }
 
-let listSections = [];             
-listSections.push({
-title: comienzo + ' 📡 𝗧𝗜𝗣𝗢𝗦 𝗗𝗘 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗦 ' + fin,
-rows: [{ header: "𓃠 𝗔 𝗨 𝗗 𝗜 𝗢 (Opcion 1)", title: "", id: `${usedPrefix}yta ${yt_play[0].url}`, description: `${yt_play[0].title}\n` }, /*{ header: "𓃠 𝗔 𝗨 𝗗 𝗜 𝗢 (Opcion 2)", title: "", id: `${usedPrefix}play.1 ${yt_play[0].url}`, description: `${yt_play[0].title}\n` },*/
-{ header: "𓃠 𝗔 𝗨 𝗗 𝗜 𝗢   𝗗 𝗢 𝗖", title: "", id: `${usedPrefix}ytmp3doc ${yt_play[0].url}`, description: `${yt_play[0].title}\n` },
-{ header: "𓃠 𝗩 𝗜 𝗗 𝗘 𝗢 (Opcion 1)", title: "", id: `${usedPrefix}ytv ${yt_play[0].url}`, description: `${yt_play[0].title}\n` },
-/*{ header: "𓃠 𝗩 𝗜 𝗗 𝗘 𝗢 (Opcion 2)", title: "", id: `${usedPrefix}play.2 ${yt_play[0].url}`, description: `${yt_play[0].title}\n` },*/
-{header: "𓃠 𝗩 𝗜 𝗗 𝗘 𝗢   𝗗 𝗢 𝗖", title: "", id: `${usedPrefix}ytmp4doc ${yt_play[0].url}`, description: `${yt_play[0].title}\n`}
-]});
+        if (!vid) return conn.reply(m.chat, `*☓ No se encontraron resultados para tu búsqueda.*`, m)
 
-/*listSections.push({
-  text: `*𝙀𝙇𝙄𝙅𝘼 𝙌𝙐𝙀 𝙑𝘼 𝙃𝘼𝘾𝙀𝙍 𝘾𝙊𝙉  ${text}*`,
-  footer: global.wm,
-  title: `${htki} *♻️ 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝙎* ${htka}`,
-  buttonText: `🍄 𝙀𝙇𝙀𝙂𝙄𝙍 🍁`,
-  sections
-}) */
+        if (command === "play" || command === "play2") {
+            const infoTexto = `乂  Y O U T U B E   M U S I C\n
+            ✩ *Título ∙* ${vid.title}\n
+            ✩ *Duración ∙* ${vid.timestamp}\n
+            ✩ *Visitas ∙* ${vid.views}\n
+            ✩ *Autor ∙* ${vid.author.name}\n
+            ✩ *Publicado ∙* ${vid.ago}\n
+            ✩ *Url ∙* ${'https://youtu.be/' + vid.videoId}\n`.trim()
 
-await conn.sendList(m.chat, `*𝙀𝙇𝙄𝙅𝘼 𝙌𝙐𝙀 𝙑𝘼 𝙃𝘼𝘾𝙀𝙍 𝘾𝙊𝙉  ${text}*`, `\n${htki} *♻️ 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝙎* ${htka}`, `🍄 𝙀𝙇𝙀𝙂𝙄𝙍 🍁`, listSections, {quoted: fkontak});
-} catch (e) {
-await conn.reply(m.chat, `${lenguajeGB['smsMalError3']()}#report ${lenguajeGB['smsMensError2']()} ${usedPrefix + command}\n\n${wm}`, fkontak, m)
-console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`)
-console.log(e)
-handler.limit = 0
-}}
-handler.command = ['play', 'play2', 'play3', 'play4']
-//handler.limit = 3
-//handler.register = true 
-export default handler;
+            await conn.sendButton(m.chat, infoTexto, wm, vid.thumbnail, [
+                ['Audio 📀', `${usedPrefix}mp3 ${vid.url}`],
+                ['Video 🎥', `${usedPrefix}mp4 ${vid.url}`],
+                ['AudioDoc 📀', `${usedPrefix}mp3doc ${vid.url}`],
+                ['VideoDoc 🎥', `${usedPrefix}mp4doc ${vid.url}`]
+            ], null, [['Canal', ` https://whatsapp.com/channel/0029Va6yY0iLY6d6XDmqA03g`]], m)
+        } else {
+            let q = command.includes('mp4') ? '360p' : '128kbps'
+            let dl_url, size, title
+            
+            if (command === 'mp3' || command === 'mp3doc') {
+                let yt = await fg.yta(vid.url, q)
+                dl_url = yt.dl_url
+                size = yt.size.split('MB')[0]
+                title = yt.title
+            } else if (command === 'mp4' || command === 'mp4doc') {
+                let yt = await fg.ytv(vid.url, q)
+                dl_url = yt.dl_url
+                size = yt.size.split('MB')[0]
+                title = yt.title
+            }
 
-async function search(query, options = {}) {
-const search = await yts.search({query, hl: 'es', gl: 'ES', ...options});
-return search.videos;
+            const limit = 100
+            if (size >= limit) {
+                return conn.reply(m.chat, `El archivo pesa más de ${limit} MB, se canceló la descarga.`, m).then(_ => m.react('✖️'))
+            }
+
+            if (command === 'mp3') {
+                await conn.sendMessage(m.chat, { 
+                    audio: { url: dl_url }, 
+                    mimetype: "audio/mpeg", 
+                    fileName: `${title}.mp3`, 
+                    quoted: m, 
+                    contextInfo: {
+                        'forwardingScore': 200,
+                        'isForwarded': true,
+                        externalAdReply:{
+                            showAdAttribution: false,
+                            title: `${title}`,
+                            body: `${vid.author.name}`,
+                            mediaType: 2, 
+                            sourceUrl: `${vid.url}`,
+                            thumbnail: await (await fetch(vid.thumbnail)).buffer()
+                        }
+                    }
+                }, { quoted: m })
+            } else if (command === 'mp4') {
+                await conn.sendMessage(m.chat, { 
+                    video: { url: dl_url }, 
+                    caption: `${title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━━━●────── ${vid.timestamp}`, 
+                    mimetype: 'video/mp4', 
+                    fileName: `${title}.mp4`, 
+                    quoted: m, 
+                    contextInfo: {
+                        'forwardingScore': 200,
+                        'isForwarded': true,
+                        externalAdReply:{
+                            showAdAttribution: false,
+                            title: `${title}`,
+                            body: `${vid.author.name}`,
+                            mediaType: 2, 
+                            sourceUrl: `${vid.url}`,
+                            thumbnail: await (await fetch(vid.thumbnail)).buffer()
+                        }
+                    }
+                }, { quoted: m })
+            } else if (command === 'mp3doc') {
+                await conn.sendMessage(m.chat, { 
+                    document: { url: dl_url }, 
+                    mimetype: "audio/mpeg", 
+                    fileName: `${title}.mp3`, 
+                    quoted: m, 
+                    contextInfo: {
+                        'forwardingScore': 200,
+                        'isForwarded': true,
+                        externalAdReply:{
+                            showAdAttribution: false,
+                            title: `${title}`,
+                            body: `${vid.author.name}`,
+                            mediaType: 2, 
+                            sourceUrl: `${vid.url}`,
+                            thumbnail: await (await fetch(vid.thumbnail)).buffer()
+                        }
+                    }
+                }, { quoted: m })
+            } else if (command === 'mp4doc') {
+                await conn.sendMessage(m.chat, { 
+                    document: { url: dl_url }, 
+                    caption: `${title}\n⇆ㅤㅤ◁ㅤㅤ❚❚ㅤㅤ▷ㅤㅤ↻\n00:15 ━━━━●────── ${vid.timestamp}`, 
+                    mimetype: 'video/mp4', 
+                    fileName: `${title}.mp4`, 
+                    quoted: m, 
+                    contextInfo: {
+                        'forwardingScore': 200,
+                        'isForwarded': true,
+                        externalAdReply:{
+                            showAdAttribution: false,
+                            title: `${title}`,
+                            body: `${vid.author.name}`,
+                            mediaType: 2, 
+                            sourceUrl: `${vid.url}`,
+                            thumbnail: await (await fetch(vid.thumbnail)).buffer()
+                        }
+                    }
+                }, { quoted: m })
+            }
+
+            await m.react('✅')
+        }
+    } catch (error) {
+        console.error(error)
+        await conn.reply(m.chat, `*☓ Ocurrió un error inesperado.*`, m).then(_ => m.react('✖️'))
+    }
 }
 
-function MilesNumber(number) {
-const exp = /(\d)(?=(\d{3})+(?!\d))/g;
-const rep = '$1.';
-const arr = number.toString().split('.');
-arr[0] = arr[0].replace(exp, rep);
-return arr[1] ? arr.join('.') : arr[0];
-}
+handler.help = ["play"].map(v => v + " <formato> <búsqueda o enlace>")
+handler.tags = ["downloader"]
+handler.command = ['play', 'play2', 'mp3', 'mp4', 'mp3doc', 'mp4doc']
+handler.register = true 
+handler.star = 1
 
-function secondString(seconds) {
-seconds = Number(seconds);
-const d = Math.floor(seconds / (3600 * 24));
-const h = Math.floor((seconds % (3600 * 24)) / 3600);
-const m = Math.floor((seconds % 3600) / 60);
-const s = Math.floor(seconds % 60);
-const dDisplay = d > 0 ? d + (d == 1 ? ' día, ' : ' días, ') : '';
-const hDisplay = h > 0 ? h + (h == 1 ? ' hora, ' : ' horas, ') : '';
-const mDisplay = m > 0 ? m + (m == 1 ? ' minuto, ' : ' minutos, ') : '';
-const sDisplay = s > 0 ? s + (s == 1 ? ' segundo' : ' segundos') : '';
-return dDisplay + hDisplay + mDisplay + sDisplay;
-  }
+export default handler

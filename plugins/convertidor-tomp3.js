@@ -12,7 +12,8 @@ if (!audio.data && !/audio/.test(mime)) throw `${lenguajeGB['smsAvisoFG']()}${mi
 if (!audio.data && !/video/.test(mime)) throw `${lenguajeGB['smsAvisoFG']()}${mid.smsconvert6}`
 conn.sendFile(m.chat, audio.data, 'error.mp3', '', m, null, { mimetype: 'audio/mp4' })
 }
-handler.help = ['tomp3 (reply)']
+handler.help = ['tomp33 (reply)']
 handler.tags = ['audio']
-handler.command = ['tomp3', 'toaudio', 'mp3']
+handler.command = /^(tomp3|toaudio)$/i
+ // ['toomp3', 'toaudio', 'mmp3']   
 export default handler
