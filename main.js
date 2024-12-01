@@ -24,7 +24,10 @@ import { mongoDB, mongoDBV2 } from './lib/mongoDB.js'
 import store from './lib/store.js'
 import readline from 'readline'
 import NodeCache from 'node-cache'
-const { makeInMemoryStore, DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore,PHONENUMBER_MCC } = await import('@whiskeysockets/baileys')
+import pkg from 'google-libphonenumber'
+const { PhoneNumberUtil } = pkg
+const phoneUtil = PhoneNumberUtil.getInstance()
+const { makeInMemoryStore, DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore } = await import('@whiskeysockets/baileys')
 const { CONNECTING } = ws
 const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
@@ -41,8 +44,8 @@ global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.
 global.timestamp = { start: new Date }
 const __dirname = global.__dirname(import.meta.url);
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
-global.prefix = new RegExp('^[' + (opts['prefix'] || '*/i!#$%+£¢€¥^°=¶∆×÷π√✓©®&.\\-.@').replace(/[|\\{}()[\]^$+*.\-\^]/g, '\\$&') + ']');
-global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`));
+global.prefix = new RegExp('^[' + (opts['prefix'] || '*/i!#$%+£¢€¥^°=¶∆×÷π√✓©®&.\\-.@').replace(/[|\\{}()[\]^$+*.\-\^]/g, '\\$&') + ']')
+global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile('database.json'))
 global.DATABASE = global.db; 
 global.loadDatabase = async function loadDatabase() {
 if (global.db.READ) {
@@ -189,7 +192,7 @@ keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ l
 },
 markOnlineOnConnect: true, 
 generateHighQualityLinkPreview: true, 
-syncFullHistory: true,
+syncFullHistory: false,
 getMessage: async (clave) => {
 let jid = jidNormalizedUser(clave.remoteJid)
 let msg = await store.loadMessage(jid, clave.id)
@@ -198,7 +201,7 @@ return msg?.message || ""
 msgRetryCounterCache, // Resolver mensajes en espera
 msgRetryCounterMap, // Determinar si se debe volver a intentar enviar un mensaje o no
 defaultQueryTimeoutMs: undefined,
-version: [2, 2513, 1],
+version: [2, 3000, 1015901307],
 }
 global.conn = makeWASocket(connectionOptions)
 if (!fs.existsSync(`./${authFile}/creds.json`)) {
@@ -212,7 +215,10 @@ addNumber = phoneNumber.replace(/[^0-9]/g, '')
 do {
 phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(mid.phNumber2(chalk))))
 phoneNumber = phoneNumber.replace(/\D/g,'')
-} while (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v)))
+if (!phoneNumber.startsWith('+')) {
+phoneNumber = `+${phoneNumber}`
+}
+} while (!await isValidPhoneNumber(phoneNumber))
 rl.close()
 addNumber = phoneNumber.replace(/\D/g, '')
 setTimeout(async () => {
@@ -252,7 +258,8 @@ if (opcion == '1' || methodCodeQR) {
 console.log(chalk.bold.yellow(mid.mCodigoQR))}
 }
 if (connection == 'open') {
-console.log(chalk.bold.greenBright(mid.mConexion))}
+console.log(chalk.bold.greenBright(mid.mConexion))
+await joinChannels(conn)}
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
 if (reason === DisconnectReason.badSession) {
@@ -520,19 +527,17 @@ arguments[0] = ""
 }
 originalConsoleMethod.apply(console, arguments)
 }}
+
 setInterval(async () => {
 if (stopped === 'close' || !conn || !conn.user) return
 await clearTmp()
 console.log(chalk.bold.cyanBright(lenguajeGB.smsClearTmp()))}, 1000 * 60 * 4) // 4 min 
-//setInterval(async () => {
-//if (stopped === 'close' || !conn || !conn.user) return
-//await purgeSession()
-//console.log(chalk.bold.cyanBright(lenguajeGB.smspurgeSession()))}, 1000 * 60 * 10) // 10 min
-//setInterval(async () => {
-//if (stopped === 'close' || !conn || !conn.user) return
-//await purgeSessionSB()}, 1000 * 60 * 10) 
+
 setInterval(async () => {
 if (stopped === 'close' || !conn || !conn.user) return
+await purgeSessionSB()
+await purgeSession()
+console.log(chalk.bold.cyanBright(lenguajeGB.smspurgeSession()))
 await purgeOldFiles()
 console.log(chalk.bold.cyanBright(lenguajeGB.smspurgeOldFiles()))}, 1000 * 60 * 10)
 
@@ -544,3 +549,23 @@ unwatchFile(file)
 console.log(chalk.bold.greenBright(lenguajeGB['smsMainBot']().trim()))
 import(`${file}?update=${Date.now()}`)
 })
+
+async function isValidPhoneNumber(number) {
+try {
+number = number.replace(/\s+/g, '')
+// Si el número empieza con '+521' o '+52 1', quitar el '1'
+if (number.startsWith('+521')) {
+number = number.replace('+521', '+52'); // Cambiar +521 a +52
+} else if (number.startsWith('+52') && number[4] === '1') {
+number = number.replace('+52 1', '+52'); // Cambiar +52 1 a +52
+}
+const parsedNumber = phoneUtil.parseAndKeepRawInput(number)
+return phoneUtil.isValidNumber(parsedNumber)
+} catch (error) {
+return false
+}}
+
+async function joinChannels(conn) {
+for (const channelId of Object.values(global.ch)) {
+await conn.newsletterFollow(channelId).catch(() => {})
+}}

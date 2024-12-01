@@ -13,13 +13,14 @@ import { en, es, id, ar, pt } from "./lib/idiomas/total-idiomas.js"
 // [ES] > Agrega el número que será Bot y los que serán propietarios.
 // [EN] > Add the number that will be Bot and those that will be owners.
 global.owner = [
-["573147616444", '𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿 💖🐈', true], //𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿
+["5214774444444", '𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿 💖🐈', true], //𝙂𝙖𝙩𝙖𝘽𝙤𝙩-𝙈𝘿
 ["5492266613038"], 
 ["5573031859"],
 ["593968585383"],
 ["595976126756"],
 ["593968263524"],
-["5215539356057"]]
+["5215539356057"],
+["5218713339906"]]
 
 global.mods = []
 global.prems = []
@@ -74,6 +75,7 @@ global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())]
 global.lolkeysapi = "GataDiosV3"
 global.itsrose = ["4b146102c4d500809da9d1ff"]
 global.baileys = "@whiskeysockets/baileys"
+global.apis = 'https://deliriussapi-oficial.vercel.app'
 
 global.APIs = { 
 xteam: 'https://api.xteam.xyz',
@@ -121,7 +123,7 @@ global.moment = moment
 // [EN] > Adding yourself, collaborators or helpers will appear in the contact list command.
 global.official = [ // Agregate si eres Owner
 ["593968263524", 'Gata Dios 💻', 1], 
-["5492266466080", '𝗗𝗲𝘀𝗮𝗿𝗿𝗼𝗹𝗹𝗮𝗱𝗼𝗿 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 💻', 1],  
+["573147616444", '𝗗𝗲𝘀𝗮𝗿𝗿𝗼𝗹𝗹𝗮𝗱𝗼𝗿 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 💻', 1],  
 ["5521989092076", '𝗗𝗲𝘀𝗮𝗿𝗿𝗼𝗹𝗹𝗮𝗱𝗼𝗿𝗮 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 💻', 1]]
 
 global.mail = '' // Add email
@@ -423,6 +425,18 @@ let results = Object.keys(emotttt).map(v => [v, new RegExp(v, 'gi')]).filter(v =
 if (!results.length) return '';
 else return emotttt[results[0][0]];
 }}
+// • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
+
+// IDs de canales
+global.ch = {
+ch1: '120363336642332098@newsletter',
+ch2: '120363160031023229@newsletter',
+ch3: '120363169294281316@newsletter',
+ch4: '120363203805910750@newsletter',
+ch5: '120363302472386010@newsletter',
+ch6: '120363301598733462@newsletter',
+ch7: '120363190430436554@newsletter',
+}
 // • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •
 
 let file = fileURLToPath(import.meta.url);

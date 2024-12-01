@@ -411,7 +411,6 @@ if (!isNumber(user.pancingan)) user.pancingan = 1
 if (!isNumber(user.panda)) user.panda = 0
 if (!isNumber(user.paus)) user.paus = 0
 if (!isNumber(user.pausbakar)) user.pausbakar = 0
-if (!isNumber(user.pc)) user.pc = 0
 if (!isNumber(user.pepesikan)) user.pepesikan = 0
 if (!isNumber(user.pertambangan)) user.pertambangan = 0
 if (!isNumber(user.pertanian)) user.pertanian = 0
@@ -832,7 +831,6 @@ panda: 0,
 pasangan: '',
 paus: 0,
 pausbakar: 0,
-pc: 0,
 pepesikan: 0,
 pet: 0,
 phonix: 0,
@@ -977,6 +975,7 @@ if (!('sBye' in chat)) chat.sBye = ''
 if (!('sPromote' in chat)) chat.sPromote = ''             
 if (!('sDemote' in chat)) chat.sDemote = '' 
 if (!('sCondition' in chat)) chat.sCondition = JSON.stringify([{ grupo: { usuario: [], condicion: [], admin: '' }, prefijos: []}])
+if (!('sAutorespond' in chat)) chat.sAutorespond = '' 
 if (!('delete' in chat)) chat.delete = false                   
 if (!('modohorny' in chat)) chat.modohorny = true       
 if (!('stickers' in chat)) chat.stickers = false            
@@ -998,7 +997,8 @@ if (!('antiTwitch' in chat)) chat.antiTwitch = false
 if (!('antifake' in chat)) chat.antifake = false
 if (!('reaction' in chat)) chat.reaction = true    
 if (!('viewonce' in chat)) chat.viewonce = false       
-if (!('modoadmin' in chat)) chat.modoadmin = false    
+if (!('modoadmin' in chat)) chat.modoadmin = false  
+if (!('autorespond' in chat)) chat.autorespond = true
 if (!('antitoxic' in chat)) chat.antitoxic = true
 if (!('game' in chat)) chat.game = true
 if (!('game2' in chat)) chat.game2 = true
@@ -1016,6 +1016,7 @@ sBye: '',
 sPromote: '',
 sDemote: '', 
 sCondition: JSON.stringify([{ grupo: { usuario: [], condicion: [], admin: '' }, prefijos: []}]), 
+sAutorespond: '', 
 delete: false,
 modohorny: true,
 stickers: false,
@@ -1038,6 +1039,7 @@ antifake: false,
 reaction: true,
 viewonce: false,
 modoadmin: false,
+autorespond: true,
 antitoxic: true,
 game: true, 
 game2: true, 
