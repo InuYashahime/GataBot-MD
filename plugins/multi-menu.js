@@ -232,7 +232,6 @@ let menuA = `🎠 ${lenguajeGB['smsConfi2']()} *${username}*
 ∘ _${usedPrefix}ppt *piedra : papel : tijera*_
 ∘ _${usedPrefix}tictactoe | ttt *sala*_
 ∘ _${usedPrefix}deltictactoe | delttt_
-∘ _${usedPrefix}topgays_
 ∘ _${usedPrefix}topotakus_
 ∘ _${usedPrefix}toppajer@s_
 ∘ _${usedPrefix}topput@s_
@@ -243,9 +242,6 @@ let menuA = `🎠 ${lenguajeGB['smsConfi2']()} *${username}*
 ∘ _${usedPrefix}toplindos | toplind@s_
 ∘ _${usedPrefix}topfamosos | topfamos@s_
 ∘ _${usedPrefix}topparejas | top5parejas_
-∘ _${usedPrefix}gay | gay *@tag*_
-∘ _${usedPrefix}gay2 *nombre : @tag*_
-∘ _${usedPrefix}lesbiana *nombre : @tag*_
 ∘ _${usedPrefix}manca *nombre : @tag*_
 ∘ _${usedPrefix}manco *nombre : @tag*_
 ∘ _${usedPrefix}pajero *nombre : @tag*_
@@ -401,7 +397,6 @@ let menuA = `✨ ${lenguajeGB['smsConfi2']()} *${username}*
 ⠇ ${lenguajeGB['smsTex14']()} ⛺
 ∘ _${usedPrefix}logos *efecto texto*_
 ∘ _${usedPrefix}simpcard *@tag*_
-∘ _${usedPrefix}hornycard *@tag*_
 ∘ _${usedPrefix}lolice *@tag*_
 ∘ _${usedPrefix}ytcomment *texto*_
 ∘ _${usedPrefix}itssostupid_
