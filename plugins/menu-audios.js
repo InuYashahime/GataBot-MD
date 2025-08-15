@@ -93,7 +93,6 @@ let str = `
 ∘ _Baneado_
 ∘ _Feliz navidad_
 ∘ _A nadie le importa_
-∘ _Sexo_
 ∘ _Vete a la vrg_
 ∘ _Ara ara_
 ∘ _Hola_
